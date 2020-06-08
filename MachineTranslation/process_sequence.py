@@ -43,7 +43,7 @@ class SequenceTokenizer:
             train, batch_size=20, sort_key=lambda x: len(x.lang_b), shuffle=True
         )
 
-    def _format_to_pandas(data_a: List[str], data_b: List[str], trim_length=80) -> pd.DataFrame:
+    def _format_to_pandas(data_a: List[str], data_b: List[str], trim_length=50) -> pd.DataFrame:
         """ Converts inputs to pandas, filters by length and compared-length """
         raw_data = {'lang_a' : [line for line in data_a], 'lang_b': [line for line in data_b]}
         df = pd.DataFrame(raw_data, columns=["lang_a", "lang_b"])
@@ -53,8 +53,8 @@ class SequenceTokenizer:
 
         # Remove pairs that are too long
         df = df.query(f'lang_b_len < {trim_length} & lang_a_len < {trim_length}')
-        # Remove those that dont have equal lengths (allow for 1.5 diff in len)
-        df = df.query('lang_b_len < lang_a_len * 1.5 & lang_b_len * 1.5 > lang_a_len')
+        # Remove those that dont have equal lengths (allow for 1.25 diff in len)
+        df = df.query('lang_b_len < lang_a_len * 1.25 & lang_b_len * 1.25 > lang_a_len')
 
         return df
 

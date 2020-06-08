@@ -57,9 +57,9 @@ class PositionalEncoder(nn.Module):
                 pos_encoding[pos,i] = math.sin(pos/(10000**((2*i)/model_dim)))
                 pos_encoding[pos,i+1] = math.cos(pos/(10000**((2*(i+1))/model_dim)))
                 
-        pos_encoding = pos_encoding.unsqueeze(0) # unsqueeze(zero) literally just adds it to another tensor - e.g. 1,4 -> 1,1,4
+        pos_encoding = pos_encoding.unsqueeze(0)
 
-        self.register_buffer('pos_encoding', pos_encoding) # still unsure what this is about, but they instist is necessary? To my knowledge its now just a parameter of the model?
+        self.register_buffer('pos_encoding', pos_encoding) # This might not be necessary, but reccommended online
  
     
     def forward(self, word_emb):
@@ -86,7 +86,7 @@ class Masking():
 
         """
         input_seq = seq_batch.English.transpose(0,1)
-        input_msk = (input_seq != self.input_pad).unsqueeze(1) # -> reduces [1,2,3,4] to [[1], [2], [3]. . .]
+        input_msk = (input_seq != self.input_pad).unsqueeze(1)
         return input_mask
 
     def mask_target(seq_batch: Tensor):
@@ -97,7 +97,7 @@ class Masking():
         size = target_seq.size(1) # get seq_len for matrix
         nopeak_mask = np.triu(np.ones((1, size, size)), k=1).astype('uint8') # lower triange matrix of 1's
         nopeak_mask = Variable(torch.from_numpy(nopeak_mask) == 0) # Turn to boolean
-        target_msk = target_msk & nopeak_mask  # BITWISE AND -> NOT SURE WHY THEY DID THIS???????????
+        target_msk = target_msk & nopeak_mask
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads: int, model_dim: int, dropout:float=0.1):
