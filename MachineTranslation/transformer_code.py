@@ -13,7 +13,7 @@ FOLLOWS THE FOLLOWING CLASS LAYOUT
 		[NOT DONE] class Normalization:
 		[NOT DONE] class FeedForward:
 
-Following by a walk-through by https://towardsdatascience.com/how-to-code-the-transformer-in-pytorch-24db27c8f9ec
+Following by a walk-through: How To Code the Transformer In Pytorch from TowardsDatascience
 """
 from typing import List
 import copy, math, time
